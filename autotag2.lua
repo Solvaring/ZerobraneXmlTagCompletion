@@ -6,8 +6,8 @@ return {
     onEditorCharAdded = function(self, editor, event)
         local tag = editor:GetCurLine()
         local curkey = event:GetKey()
-        local curpos = editor:GetCurrentPos()
         if curkey == 62 and tag:find("%b<>") then
+        local curpos = editor:GetCurrentPos()
             if tag:find([[</]]) then
                 goto breakout
             end
@@ -16,6 +16,7 @@ return {
             end
             local tagtoclose = tag:match("<([%a%d]+)")
             editor:AddText("</"..tagtoclose..">")
+            editor:SetEmptySelection(curpos)
             ::breakout::
         end
     end
