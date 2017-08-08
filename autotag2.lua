@@ -11,10 +11,21 @@ return {
             if tag:find([[</]]) then
                 goto breakout
             end
-            if tag:find([[<[%w%d%s"'=]+/>]]) then
-                goto breakout
+            if tag:find([[/>]]) then
+                return
             end
+            local document = editor:GetText()
             local tagtoclose = tag:match("<([%a%d]+)")
+            local fullclosingtag = "</"..tagtoclose..">"
+            local fullopeningtag = "<"..tagtoclose..">"
+            if document:find(fullopeningtag..">") then
+                editor:AddText(fullclosingtag)
+                editor:SetEmptySelection(curpos)
+                editor:DeleteRange(curpos-1, 1)
+                return
+            elseif document:find(fullclosingtag) then
+                return
+            end
             editor:AddText("</"..tagtoclose..">")
             editor:SetEmptySelection(curpos)
             ::breakout::
