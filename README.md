@@ -1,5 +1,18 @@
 # ZerobraneXmlTagCompletion
 Automatically adds closing tags for HTML/XML
+Version 3
+
+autotag3.lua is the latest version. Version 3 now supports entering multiple elements per line, self-closing tags will not trigger the autocomplete behavior. The plugin scans the document when deciding wether or not to place closing tags. For instance, if I have:
+
+```
+<GuiXml>
+</GuiXml>
+```
+Attempting to start another <GuiXml> tag you will not get autocomplete because it detects a closing tag already in the doc for <GuiXml>
+
+To Override this behavior just type an extra Chevron <GuiXml>> will become <GuiXml></GuiXml>
+=====================================================================================================
+Version 2
 
 Now scans entire document when deciding whether or not to place a closing tag, in addition to the current line.
 
