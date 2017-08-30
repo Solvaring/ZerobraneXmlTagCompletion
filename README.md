@@ -9,9 +9,9 @@ autotag3.lua is the latest version. Version 3 now supports entering multiple ele
 <GuiXml>
 </GuiXml>
 ```
-Attempting to start another <GuiXml> tag you will not get autocomplete because it detects a closing tag already in the doc for <GuiXml>
+Attempting to start another ` <GuiXml> ` tag you will not get autocomplete because it detects a closing tag already in the doc for ` <GuiXml> `
 
-To Override this behavior just type an extra Chevron <GuiXml>> will become <GuiXml></GuiXml>
+To Override this behavior just type an extra Chevron ">" ` <GuiXml>> ` will become ` <GuiXml></GuiXml> `
 
 This behavior is actually held over from older versions, I can't remember what purpose it served at the time. If enough people complain to me about its annoyance then I can remove it but I swear it had an important reason at one time or another so I'm a bit cautious to do away with it.
 
