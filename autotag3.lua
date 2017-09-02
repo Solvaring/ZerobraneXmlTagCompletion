@@ -11,7 +11,7 @@ return {
             local curpos = editor:GetCurrentPos() --Get Current position of caret and store in curpos
             local check1=""
             local dubcheck=""
-            for stag, check in tag:gmatch("<(%w+)%s*[%w\"\'_]*(/*)>") do -- Get the last opened tag on current line and store in `tagtoclose`
+            for stag, check in tag:gmatch("<(%w+)%s*[%s%w\"\'_=]*(/*)>") do -- Get the last opened tag on current line and store in `tagtoclose`
                 check1 = check
                 --for check in tag:gmatch("/>") do if check then check1 = check end end
                 --tagtoclose = nil
