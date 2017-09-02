@@ -9,20 +9,30 @@ return {
         local curkey = event:GetKey() -- Get value of current key being pressed and assign to `curkey`
         if curkey == 62 and tag:find("%b<>") then -- If current key `curkey` is ">" and current line `tag` contains a balanced string resembling an html/xml tag
             local curpos = editor:GetCurrentPos() --Get Current position of caret and store in curpos
-            for stag in tag:gmatch("<([%a%d]+)>") do -- Get the last opened tag on current line and store in `tagtoclose`
+            local check1=""
+            local dubcheck=""
+            for stag, check in tag:gmatch("<(%w+)%s*[%w\"\'_]*(/*)>") do -- Get the last opened tag on current line and store in `tagtoclose`
+                check1 = check
+                --for check in tag:gmatch("/>") do if check then check1 = check end end
+                --tagtoclose = nil
+                --check1 = nil
                 tagtoclose = stag
             end
-            if tagtoclose:find([[/>]]) then return end -- if the tag is self-closing then return
+            if check1:find("/") then return end -- if the tag is self-closing then return
             local document = editor:GetText() -- Store all text currently in editor
             local fullclosingtag = "</"..tagtoclose..">" -- build closing tag
             local fullopeningtag = "<"..tagtoclose..">" -- build opening tag
-            if document:find(fullopeningtag..">") then -- if opening tag with extra chevron found
-                editor:AddText(fullclosingtag) -- add another closing tag
-                editor:SetEmptySelection(curpos) -- reset caret
-                editor:DeleteRange(curpos-1, 1) -- delete extra chevron ">"
-                return
-            elseif document:find(fullclosingtag) then -- If closing tag already found in document then return. The If part of this block above circumvents this behavior as a sort of override switch to enter an nth duplicate closing tag
-                return
+            local partialopeningtag = "<"..tagtoclose
+            if document:find(fullclosingtag) then
+                for dubchev in tag:gmatch(">>") do dubcheck = dubchev end
+                if dubcheck:find(">>") then
+                    editor:AddText(fullclosingtag) -- add another closing tag
+                    editor:SetEmptySelection(curpos) -- reset caret
+                    editor:DeleteRange(curpos-1, 1) -- delete extra chevron ">
+                    return
+                else
+                    return
+                end
             end
             editor:AddText(fullclosingtag) -- add closing tag
             editor:SetEmptySelection(curpos) -- Reset cursor position so entries can begin to be made inbetween the opening and closing tag.
