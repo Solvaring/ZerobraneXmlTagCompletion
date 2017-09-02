@@ -9,6 +9,7 @@ return {
         local curkey = event:GetKey() -- Get value of current key being pressed and assign to `curkey`
         if curkey == 62 and tag:find("%b<>") then -- If current key `curkey` is ">" and current line `tag` contains a balanced string resembling an html/xml tag
             local curpos = editor:GetCurrentPos() --Get Current position of caret and store in curpos
+            --local tagtoclose=""
             local check1=""
             local dubcheck=""
             for stag, check in tag:gmatch("<(%w+)%s*[%s%w\"\'_=]*(/*)>") do -- Get the last opened tag on current line and store in `tagtoclose`
@@ -20,6 +21,7 @@ return {
             end
             if check1:find("/") then return end -- if the tag is self-closing then return
             local document = editor:GetText() -- Store all text currently in editor
+            if not tagtoclose then return end
             local fullclosingtag = "</"..tagtoclose..">" -- build closing tag
             local fullopeningtag = "<"..tagtoclose..">" -- build opening tag
             local partialopeningtag = "<"..tagtoclose
