@@ -9,16 +9,17 @@ return {
         local curkey = event:GetKey() -- Get value of current key being pressed and assign to `curkey`
         if curkey == 62 and tag:find("%b<>") then -- If current key `curkey` is ">" and current line `tag` contains a balanced string resembling an html/xml tag
             local curpos = editor:GetCurrentPos() --Get Current position of caret and store in curpos
-            --local tagtoclose=""
+            --local attcheck
             local check1=""
             local dubcheck=""
             for stag, check in tag:gmatch("<(%w+)%s*[%s%w\"\'_=]*(/*)>") do -- Get the last opened tag on current line and store in `tagtoclose`
                 check1 = check
-                --for check in tag:gmatch("/>") do if check then check1 = check end end
-                --tagtoclose = nil
-                --check1 = nil
                 tagtoclose = stag
+                --[[for attrcheck in tag:gmatch("[\"\'].+>") do
+                    attcheck = attrcheck
+                end]]
             end
+            --if attcheck then attcheck=nil return end
             if check1:find("/") then return end -- if the tag is self-closing then return
             local document = editor:GetText() -- Store all text currently in editor
             if not tagtoclose then return end
@@ -31,6 +32,9 @@ return {
                     editor:AddText(fullclosingtag) -- add another closing tag
                     editor:SetEmptySelection(curpos) -- reset caret
                     editor:DeleteRange(curpos-1, 1) -- delete extra chevron ">
+                    fullclosingtag=nil
+                    fullopeningtag=nil
+                    tagtoclose=nil
                     return
                 else
                     return
@@ -38,7 +42,9 @@ return {
             end
             editor:AddText(fullclosingtag) -- add closing tag
             editor:SetEmptySelection(curpos) -- Reset cursor position so entries can begin to be made inbetween the opening and closing tag.
-            ::breakout::
+            fullclosingtag = nil
+            fullopeningtag=nil
+            tagtoclose=nil
         end
     end
 
